@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PrePMa • AI Prep Assistant</title>
+  <meta name="description" content="PrePMa is your AI chatbot for PrEP information and support. Chat privately, anytime." />
+
+  <!-- Fonts & App Styles -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css" />
+
+  <!-- Dialogflow Messenger Theme CSS -->
+  <link rel="stylesheet" href="https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/themes/df-messenger-default.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#home" aria-label="PrePMa home">
+        <span class="brand-mark" aria-hidden="true">💬</span>
+        <span class="brand-text">PrePMa</span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <button class="nav-toggle" aria-expanded="false" aria-controls="primary-menu">Menu</button>
+        <ul id="primary-menu" class="nav-list">
+          <li><a href="#features">Features</a></li>
+          <li><a href="#how">How it works</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="home">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container hero-inner">
+        <div class="hero-copy">
+          <h1>
+            Meet <span class="grad">PrePMa</span>, your <span class="underline">private</span> AI prep companion
+          </h1>
+          <p class="lead">
+            Ask questions, get guidance, and explore resources—instantly and confidentially.
+          </p>
+          <div class="cta">
+            <a class="btn btn-primary" href="#" id="open-chat">Chat with PrePMa</a>
+            <a class="btn btn-secondary" href="#features">Explore features</a>
+          </div>
+          <div class="trust">
+            <span class="badge">24/7</span>
+            <span class="badge">Secure</span>
+            <span class="badge">Free</span>
+          </div>
+        </div>
+        <div class="hero-art" role="img" aria-label="Abstract colorful preview">
+          <div class="orb orb-1"></div>
+          <div class="orb orb-2"></div>
+          <div class="card glass">
+            <div class="card-line"></div>
+            <div class="card-line w-70"></div>
+            <div class="card-line w-50"></div>
+            <div class="card-line w-80"></div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-bg"></div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="section">
+      <div class="container">
+        <header class="section-head">
+          <h2>Why people love PrePMa</h2>
+          <p>Fast, friendly, and built for privacy from the ground up.</p>
+        </header>
+        <div class="grid features-grid">
+          <article class="feature">
+            <div class="icon">🔐</div>
+            <h3>Private by design</h3>
+            <p>Conversations stay on your device. Your questions remain confidential.</p>
+          </article>
+          <article class="feature">
+            <div class="icon">⚡</div>
+            <h3>Instant answers</h3>
+            <p>Real-time responses with clear, actionable guidance when you need it.</p>
+          </article>
+          <article class="feature">
+            <div class="icon">🧭</div>
+            <h3>Helpful resources</h3>
+            <p>Find clinics, learn about options, and get step-by-step support.</p>
+          </article>
+          <article class="feature">
+            <div class="icon">🌐</div>
+            <h3>Anytime, anywhere</h3>
+            <p>Works on mobile and desktop—no install required.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section id="how" class="section alt">
+      <div class="container">
+        <header class="section-head">
+          <h2>How it works</h2>
+          <p>Three simple steps to get the help you need.</p>
+        </header>
+        <ol class="steps">
+          <li>
+            <span class="step-num">1</span>
+            <div>
+              <h3>Open the chat</h3>
+              <p>Click the bubble at the bottom right to start.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <div>
+              <h3>Ask anything</h3>
+              <p>Type your question and get instant, friendly answers.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <div>
+              <h3>Take action</h3>
+              <p>Use the suggested steps and resources tailored to you.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="section">
+      <div class="container">
+        <header class="section-head">
+          <h2>Questions, answered</h2>
+          <p>Here are a few common questions about PrePMa.</p>
+        </header>
+        <div class="faq">
+          <details>
+            <summary>Is my conversation private?</summary>
+            <p>Yes. PrePMa is designed with privacy in mind. Avoid sharing personal identifiers, and you can clear your chat anytime.</p>
+          </details>
+          <details>
+            <summary>Do I need to install anything?</summary>
+            <p>No install required. Just open the chat bubble and start talking.</p>
+          </details>
+          <details>
+            <summary>Can I use this on my phone?</summary>
+            <p>Absolutely. The site and chat experience are fully responsive.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to action -->
+    <section class="section cta-final">
+      <div class="container cta-final-inner">
+        <h2>Ready to chat?</h2>
+        <p>PrePMa is here to help—day or night.</p>
+        <a class="btn btn-primary btn-lg" href="#" id="open-chat-2">Start a conversation</a>
+      </div>
+    </section>
+  </main>
+
+  <footer id="contact" class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <div class="brand small"><span class="brand-mark" aria-hidden="true">💬</span> PrePMa</div>
+        <p class="muted">Your AI prep companion.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <p class="copyright">© <span id="year"></span> PrePMa. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Dialogflow Messenger Script & Widget -->
+<link rel="stylesheet" href="https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/themes/df-messenger-default.css">
+<script src="https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/df-messenger.js"></script>
+<df-messenger
+  project-id="prepbot-41203"
+  agent-id="ba775f74-8c0a-4643-ada2-577a3d624b9f"
+  language-code="en"
+  max-query-length="-1">
+  <df-messenger-chat-bubble
+    chat-title="v4_agent">
+  </df-messenger-chat-bubble>
+</df-messenger>
+<style>
+  df-messenger {
+    z-index: 999;
+    position: fixed;
+    --df-messenger-font-color: #000;
+    --df-messenger-font-family: Google Sans;
+    --df-messenger-chat-background: #E7EFFE;
+    --df-messenger-message-user-background: #d3e3fd;
+    --df-messenger-message-bot-background: #fff;
+    bottom: 16px;
+    right: 16px;
+  }
+</style>
+
+  <!-- App JS -->
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

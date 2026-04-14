@@ -1,0 +1,10 @@
+{
+  "name": "prepma-landing",
+  "private": true,
+  "version": "1.0.0",
+  "description": "PrePMa landing page with Dialogflow Messenger",
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "node server.js"
+  }
+}
