@@ -44,17 +44,33 @@
     });
   });
 
-  // Chat CTAs: attempt to bring the chat into focus and nudge the widget
+  // Chat CTAs: open the Dialogflow Messenger chat window
   function nudgeChat() {
+    try {
+      const bubble = document.querySelector('df-messenger-chat-bubble');
+      const btn = bubble && bubble.shadowRoot && bubble.shadowRoot.querySelector('button');
+      if (btn) { btn.click(); return; }
+    } catch(_) {}
     const df = document.querySelector('df-messenger');
-    if (!df) return;
-    // Scroll to bottom to ensure bubble visible on long pages
-    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-    // Add a temporary nudge animation class
-    df.classList.add('df-nudge');
-    setTimeout(() => df.classList.remove('df-nudge'), 1200);
-    // Best-effort open attempt (may be ignored if unsupported)
-    try { df.setAttribute('opened', 'true'); } catch(_) {}
+    if (df) { df.classList.add('df-nudge'); setTimeout(() => df.classList.remove('df-nudge'), 1200); }
+  }
+
+  // Show greeting + prompt suggestions on first chat open
+  let chatGreeted = false;
+  const dfGreet = document.querySelector('df-messenger');
+  if (dfGreet) {
+    dfGreet.addEventListener('df-chat-open-changed', (e) => {
+      const isOpen = e && e.detail && e.detail.isOpen;
+      if (isOpen && !chatGreeted) {
+        chatGreeted = true;
+        setTimeout(() => {
+          if (typeof dfGreet.renderCustomText === 'function') {
+            dfGreet.renderCustomText('Hi! I am PrEP Bot! 👋 Type your question below to get started. You can ask things like:\n• What is PrEP?\n• How do I get PrEP?\n• Are there any side effects?');
+          }
+        }, 350);
+        showDownloadBtn();
+      }
+    });
   }
 
   const openChatBtns = ['#open-chat', '#open-chat-2'].map(id => $(id)).filter(Boolean);
@@ -68,17 +84,56 @@
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = String(y);
 
-  // Dialogflow diagnostics: log request/response and errors if available
-  const df = document.querySelector('df-messenger');
-  if (df) {
+  // Chat history capture + download
+  const chatLog = [];
+
+  function formatTimestamp() {
+    return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
+
+  function showDownloadBtn() {
+    if (document.getElementById('prep-download-chat')) return;
+    const btn = document.createElement('button');
+    btn.id = 'prep-download-chat';
+    btn.title = 'Download chat history';
+    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download chat';
+    btn.style.cssText = 'position:fixed;bottom:90px;right:16px;z-index:1000;display:flex;align-items:center;gap:6px;padding:8px 14px;background:#fff;border:1.5px solid #e2e8f0;border-radius:999px;font-size:12px;font-family:var(--f-body,sans-serif);color:#1e2d45;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.12);transition:background 0.15s;';
+    btn.addEventListener('mouseenter', () => btn.style.background = '#f4f6fb');
+    btn.addEventListener('mouseleave', () => btn.style.background = '#fff');
+    btn.addEventListener('click', () => {
+      if (!chatLog.length) return;
+      const lines = ['PrEP Bot — Chat History', '=' .repeat(40), ''];
+      chatLog.forEach(m => lines.push(`[${m.time}] ${m.role === 'user' ? 'You' : 'PrEP Bot'}: ${m.text}`));
+      lines.push('', '=' .repeat(40), `Downloaded ${new Date().toLocaleString()}`);
+      const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'prepbot-chat.txt';
+      a.click();
+      URL.revokeObjectURL(a.href);
+    });
+    document.body.appendChild(btn);
+  }
+
+  const dfEl = document.querySelector('df-messenger');
+  if (dfEl) {
     try {
-      df.addEventListener('df-request-sent', (e) => {
-        console.log('[PrEP Bot][DF] request', e && e.detail);
+      dfEl.addEventListener('df-request-sent', (e) => {
+        const text = e && e.detail && e.detail.queryInput && e.detail.queryInput.text && e.detail.queryInput.text.text;
+        if (text) { chatLog.push({ role: 'user', text, time: formatTimestamp() }); showDownloadBtn(); }
       });
-      df.addEventListener('df-response-received', (e) => {
-        console.log('[PrEP Bot][DF] response', e && e.detail);
+      dfEl.addEventListener('df-response-received', (e) => {
+        try {
+          const msgs = e && e.detail && e.detail.response && e.detail.response.queryResult && e.detail.response.queryResult.responseMessages;
+          if (msgs) {
+            msgs.forEach(m => {
+              const text = m.text && m.text.text && m.text.text[0];
+              if (text) chatLog.push({ role: 'bot', text, time: formatTimestamp() });
+            });
+          }
+        } catch(_) {}
       });
-      df.addEventListener('df-error', (e) => {
+      dfEl.addEventListener('df-error', (e) => {
         console.error('[PrEP Bot][DF] error', e && e.detail);
       });
     } catch(err) {

@@ -336,6 +336,12 @@
     <df-messenger-chat-bubble chat-title="PrEP Bot"></df-messenger-chat-bubble>
   </df-messenger>
   <style>
+    .smcx-passive-feedback > .smcx-btn-primary {
+      right: auto !important;
+      left: 0px !important;
+      transform: rotate(90deg) translate(-100%, 0%) !important;
+      transform-origin: left bottom !important;
+    }
     df-messenger {
       z-index: 999;
       position: fixed;
@@ -344,6 +350,7 @@
       --df-messenger-chat-background: #f3f6fc;
       --df-messenger-message-user-background: #d3e3fd;
       --df-messenger-message-bot-background: #fff;
+      --df-messenger-chat-window-width: 420px;
       bottom: 16px;
       right: 16px;
     }
@@ -365,10 +372,24 @@
       navCta.addEventListener('click', function(e) {
         e.preventDefault();
         var df = document.querySelector('df-messenger');
-        if (df) { df.classList.add('df-nudge'); setTimeout(function(){ df.classList.remove('df-nudge'); }, 1200); try { df.setAttribute('opened','true'); } catch(_){} }
+        try { var b = document.querySelector('df-messenger-chat-bubble'); var ib = b && b.shadowRoot && b.shadowRoot.querySelector('button'); if (ib) { ib.click(); return; } } catch(_) {}
+        if (df) { df.classList.add('df-nudge'); setTimeout(function(){ df.classList.remove('df-nudge'); }, 1200); }
       });
     }
   </script>
   <script>(function(t,e,s,o){var n,a,c;t.SMCX=t.SMCX||[],e.getElementById(o)||(n=e.getElementsByTagName(s),a=n[n.length-1],c=e.createElement(s),c.type="text/javascript",c.async=!0,c.id=o,c.src="https://widget.surveymonkey.com/collect/website/js/tRaiETqnLgj758hTBazgd9vvG7KR2qOWaJGdmZ7D1BNbGoPE7Y5vOvWyBUtQnC1r.js",a.parentNode.insertBefore(c,a))})(window,document,"script","smcx-sdk");</script>
+  <script>
+    (function() {
+      function moveFeedbackTab() {
+        var frame = document.getElementById('smcx_frame');
+        if (!frame) return;
+        frame.style.setProperty('right', 'auto', 'important');
+        frame.style.setProperty('left', '0', 'important');
+      }
+      var observer = new MutationObserver(function() { moveFeedbackTab(); });
+      observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['style'] });
+      window.addEventListener('load', function() { setTimeout(moveFeedbackTab, 500); setTimeout(moveFeedbackTab, 1500); });
+    })();
+  </script>
 </body>
 </html>
