@@ -3,213 +3,372 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PrePMa • AI Prep Assistant</title>
-  <meta name="description" content="PrePMa is your AI chatbot for PrEP information and support. Chat privately, anytime." />
-
-  <!-- Fonts & App Styles -->
+  <title>PrEP Bot - AI Prep Assistant</title>
+  <meta name="description" content="PrEP Bot is your private AI chatbot for PrEP information and guidance. Chat securely, anytime." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/styles.css" />
-
-  <!-- Dialogflow Messenger Theme CSS -->
   <link rel="stylesheet" href="https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/themes/df-messenger-default.css">
 </head>
 <body>
+
+  <!-- ── Header ── -->
   <header class="site-header">
     <div class="container header-inner">
-      <a class="brand" href="#home" aria-label="PrePMa home">
-        <span class="brand-mark" aria-hidden="true">💬</span>
-        <span class="brand-text">PrePMa</span>
+      <a class="brand" href="#home" aria-label="PrEP Bot home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+        </span>
+        <span class="brand-text">PrEP Bot</span>
       </a>
       <nav class="nav" aria-label="Primary">
-        <button class="nav-toggle" aria-expanded="false" aria-controls="primary-menu">Menu</button>
+        <button class="nav-toggle" aria-expanded="false" aria-controls="primary-menu" aria-label="Toggle navigation">
+          <span></span><span></span><span></span>
+        </button>
         <ul id="primary-menu" class="nav-list">
           <li><a href="#features">Features</a></li>
           <li><a href="#how">How it works</a></li>
           <li><a href="#faq">FAQ</a></li>
-          <li><a href="#contact">Contact</a></li>
         </ul>
+        <a class="btn btn-nav" href="#" id="open-chat-nav">Chat now</a>
       </nav>
     </div>
   </header>
 
   <main id="home">
-    <!-- Hero -->
-    <section class="hero">
+
+    <!-- ── Hero ── -->
+    <section class="hero" aria-labelledby="hero-heading">
+      <div class="hero-orb hero-orb-1" aria-hidden="true"></div>
+      <div class="hero-orb hero-orb-2" aria-hidden="true"></div>
+      <div class="hero-orb hero-orb-3" aria-hidden="true"></div>
+
       <div class="container hero-inner">
         <div class="hero-copy">
-          <h1>
-            Meet <span class="grad">PrePMa</span>, your <span class="underline">private</span> AI prep companion
+          <h1 id="hero-heading">
+            <span class="h1-row">Your <em>private</em></span>
+            <span class="h1-row">AI guide to PrEP</span>
           </h1>
-          <p class="lead">
-            Ask questions, get guidance, and explore resources—instantly and confidentially.
-          </p>
+          <p class="lead">Ask questions, get clear guidance, and find resources. Instantly and confidentially.</p>
           <div class="cta">
-            <a class="btn btn-primary" href="#" id="open-chat">Chat with PrePMa</a>
-            <a class="btn btn-secondary" href="#features">Explore features</a>
+            <a class="btn btn-primary" href="#" id="open-chat">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              </svg>
+              Chat with PrEP Bot
+            </a>
+            <a class="btn btn-ghost" href="#features">Learn more</a>
           </div>
           <div class="trust">
-            <span class="badge">24/7</span>
-            <span class="badge">Secure</span>
-            <span class="badge">Free</span>
+            <span class="badge">
+              <span class="badge-dot"></span>
+              Live now
+            </span>
+            <span class="badge badge-plain">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              Private
+            </span>
+            <span class="badge badge-plain">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+              Free
+            </span>
           </div>
         </div>
-        <div class="hero-art" role="img" aria-label="Abstract colorful preview">
-          <div class="orb orb-1"></div>
-          <div class="orb orb-2"></div>
-          <div class="card glass">
-            <div class="card-line"></div>
-            <div class="card-line w-70"></div>
-            <div class="card-line w-50"></div>
-            <div class="card-line w-80"></div>
+
+        <div class="hero-visual" aria-label="PrEP Bot conversation preview">
+          <div class="chat-card">
+            <div class="chat-card-header">
+              <div class="chat-avatar">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+              </div>
+              <div class="chat-meta">
+                <span class="chat-name">PrEP Bot</span>
+                <span class="chat-status">
+                  <span class="status-ring"></span>
+                  <span class="status-dot"></span>
+                  Online now
+                </span>
+              </div>
+              <div class="chat-actions" aria-hidden="true">
+                <span class="dot-ctrl"></span>
+                <span class="dot-ctrl"></span>
+                <span class="dot-ctrl"></span>
+              </div>
+            </div>
+            <div class="chat-messages">
+              <div class="msg msg-bot msg-1">Hi! I'm here for your PrEP questions, privately and judgment-free.</div>
+              <div class="msg msg-user msg-2">What is PrEP exactly?</div>
+              <div class="msg msg-bot msg-3">PrEP is a daily medication that prevents HIV. Highly effective when taken consistently.</div>
+              <div class="msg msg-bot msg-4">
+                <div class="typing-indicator">
+                  <span></span><span></span><span></span>
+                </div>
+              </div>
+            </div>
+            <div class="chat-input-bar">
+              <span class="input-placeholder">Ask your question...</span>
+              <button class="send-btn" aria-label="Send message">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
       </div>
-      <div class="hero-bg"></div>
+
+      <div class="hero-scroll-cue" aria-hidden="true">
+        <div class="scroll-mouse">
+          <div class="scroll-wheel"></div>
+        </div>
+      </div>
     </section>
 
-    <!-- Features -->
-    <section id="features" class="section">
+    <!-- ── Features ── -->
+    <section id="features" class="section section-features">
       <div class="container">
         <header class="section-head">
-          <h2>Why people love PrePMa</h2>
-          <p>Fast, friendly, and built for privacy from the ground up.</p>
+          <p class="section-kicker">Why PrEP Bot</p>
+          <h2>Built for privacy and ease</h2>
         </header>
-        <div class="grid features-grid">
-          <article class="feature">
-            <div class="icon">🔐</div>
-            <h3>Private by design</h3>
-            <p>Conversations stay on your device. Your questions remain confidential.</p>
+        <div class="bento">
+          <article class="bento-card bento-primary">
+            <div class="bento-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+            </div>
+            <div class="bento-text">
+              <h3>Private by design</h3>
+              <p>Your questions stay yours. No account, no data stored, no history tracked.</p>
+            </div>
+            <div class="bento-decoration" aria-hidden="true">
+              <div class="deco-ring deco-ring-1"></div>
+              <div class="deco-ring deco-ring-2"></div>
+            </div>
           </article>
-          <article class="feature">
-            <div class="icon">⚡</div>
+          <article class="bento-card">
+            <div class="bento-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+              </svg>
+            </div>
             <h3>Instant answers</h3>
-            <p>Real-time responses with clear, actionable guidance when you need it.</p>
+            <p>Real-time guidance when you need it most.</p>
           </article>
-          <article class="feature">
-            <div class="icon">🧭</div>
+          <article class="bento-card">
+            <div class="bento-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+              </svg>
+            </div>
             <h3>Helpful resources</h3>
-            <p>Find clinics, learn about options, and get step-by-step support.</p>
+            <p>Clinics, next steps, and options tailored to you.</p>
           </article>
-          <article class="feature">
-            <div class="icon">🌐</div>
-            <h3>Anytime, anywhere</h3>
-            <p>Works on mobile and desktop—no install required.</p>
+          <article class="bento-card bento-accent">
+            <div class="bento-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+              </svg>
+            </div>
+            <div class="bento-text">
+              <h3>Anytime, anywhere</h3>
+              <p>No install. Works on every device, day or night.</p>
+            </div>
           </article>
         </div>
       </div>
     </section>
 
-    <!-- How it works -->
-    <section id="how" class="section alt">
+    <!-- ── How it works ── -->
+    <section id="how" class="section section-how">
       <div class="container">
         <header class="section-head">
-          <h2>How it works</h2>
-          <p>Three simple steps to get the help you need.</p>
+          <p class="section-kicker">How it works</p>
+          <h2>Get help in three steps</h2>
         </header>
-        <ol class="steps">
-          <li>
-            <span class="step-num">1</span>
-            <div>
+        <div class="steps-grid">
+          <div class="step">
+            <div class="step-num-wrap">
+              <span class="step-num">1</span>
+            </div>
+            <div class="step-body">
               <h3>Open the chat</h3>
-              <p>Click the bubble at the bottom right to start.</p>
+              <p>Tap the chat button to start a private conversation, no sign-up needed.</p>
             </div>
-          </li>
-          <li>
-            <span class="step-num">2</span>
-            <div>
+          </div>
+          <div class="step-connector" aria-hidden="true"></div>
+          <div class="step">
+            <div class="step-num-wrap">
+              <span class="step-num">2</span>
+            </div>
+            <div class="step-body">
               <h3>Ask anything</h3>
-              <p>Type your question and get instant, friendly answers.</p>
+              <p>Type your question and get instant, friendly answers without judgment.</p>
             </div>
-          </li>
-          <li>
-            <span class="step-num">3</span>
-            <div>
+          </div>
+          <div class="step-connector" aria-hidden="true"></div>
+          <div class="step">
+            <div class="step-num-wrap">
+              <span class="step-num">3</span>
+            </div>
+            <div class="step-body">
               <h3>Take action</h3>
-              <p>Use the suggested steps and resources tailored to you.</p>
+              <p>Use the resources and next steps tailored to your situation.</p>
             </div>
-          </li>
-        </ol>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- FAQ -->
-    <section id="faq" class="section">
-      <div class="container">
+    <!-- ── FAQ ── -->
+    <section id="faq" class="section section-faq">
+      <div class="container faq-wrap">
         <header class="section-head">
-          <h2>Questions, answered</h2>
-          <p>Here are a few common questions about PrePMa.</p>
+          <p class="section-kicker">FAQ</p>
+          <h2>Common questions</h2>
         </header>
         <div class="faq">
-          <details>
-            <summary>Is my conversation private?</summary>
-            <p>Yes. PrePMa is designed with privacy in mind. Avoid sharing personal identifiers, and you can clear your chat anytime.</p>
+          <details class="faq-item">
+            <summary class="faq-q">
+              Is my conversation private?
+              <span class="faq-icon" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </span>
+            </summary>
+            <div class="faq-body">
+              <p>Yes. PrEP Bot is designed with privacy in mind. Avoid sharing personal identifiers, and you can clear your chat anytime.</p>
+            </div>
           </details>
-          <details>
-            <summary>Do I need to install anything?</summary>
-            <p>No install required. Just open the chat bubble and start talking.</p>
+          <details class="faq-item">
+            <summary class="faq-q">
+              Do I need to install anything?
+              <span class="faq-icon" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </span>
+            </summary>
+            <div class="faq-body">
+              <p>No install required. Just open the chat bubble and start talking instantly.</p>
+            </div>
           </details>
-          <details>
-            <summary>Can I use this on my phone?</summary>
-            <p>Absolutely. The site and chat experience are fully responsive.</p>
+          <details class="faq-item">
+            <summary class="faq-q">
+              Can I use this on my phone?
+              <span class="faq-icon" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </span>
+            </summary>
+            <div class="faq-body">
+              <p>Absolutely. The site and chat experience are fully responsive on all devices.</p>
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary class="faq-q">
+              Is PrEP Bot free to use?
+              <span class="faq-icon" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </span>
+            </summary>
+            <div class="faq-body">
+              <p>Yes, completely free. No subscriptions, no hidden costs. Just open and chat.</p>
+            </div>
           </details>
         </div>
       </div>
     </section>
 
-    <!-- Call to action -->
-    <section class="section cta-final">
-      <div class="container cta-final-inner">
-        <h2>Ready to chat?</h2>
-        <p>PrePMa is here to help—day or night.</p>
-        <a class="btn btn-primary btn-lg" href="#" id="open-chat-2">Start a conversation</a>
+    <!-- ── CTA ── -->
+    <section class="section section-cta">
+      <div class="cta-orb cta-orb-1" aria-hidden="true"></div>
+      <div class="cta-orb cta-orb-2" aria-hidden="true"></div>
+      <div class="container">
+        <div class="cta-block">
+          <p class="cta-kicker">Start today</p>
+          <h2>Ready to get started?</h2>
+          <p class="cta-sub">PrEP Bot is here for you, day or night. Private, free, and always available.</p>
+          <a class="btn btn-primary btn-lg" href="#" id="open-chat-2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+            Chat with PrEP Bot
+          </a>
+        </div>
       </div>
     </section>
+
   </main>
 
+  <!-- ── Footer ── -->
   <footer id="contact" class="site-footer">
     <div class="container footer-inner">
-      <div>
-        <div class="brand small"><span class="brand-mark" aria-hidden="true">💬</span> PrePMa</div>
-        <p class="muted">Your AI prep companion.</p>
+      <div class="footer-brand">
+        <a class="brand brand-footer" href="#home" aria-label="PrEP Bot home">
+          <span class="brand-mark" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+          </span>
+          <span class="brand-text">PrEP Bot</span>
+        </a>
+        <p class="footer-tagline">Your AI prep companion.</p>
       </div>
-      <div class="footer-links">
+      <nav class="footer-links" aria-label="Footer navigation">
         <a href="#features">Features</a>
         <a href="#how">How it works</a>
         <a href="#faq">FAQ</a>
-      </div>
-      <p class="copyright">© <span id="year"></span> PrePMa. All rights reserved.</p>
+      </nav>
+      <p class="copyright">© <span id="year"></span> PrEP Bot. All rights reserved.</p>
     </div>
   </footer>
 
-  <!-- Dialogflow Messenger Script & Widget -->
-<link rel="stylesheet" href="https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/themes/df-messenger-default.css">
-<script src="https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/df-messenger.js"></script>
-<df-messenger
-  project-id="prepbot-41203"
-  agent-id="ba775f74-8c0a-4643-ada2-577a3d624b9f"
-  language-code="en"
-  max-query-length="-1">
-  <df-messenger-chat-bubble
-    chat-title="v4_agent">
-  </df-messenger-chat-bubble>
-</df-messenger>
-<style>
-  df-messenger {
-    z-index: 999;
-    position: fixed;
-    --df-messenger-font-color: #000;
-    --df-messenger-font-family: Google Sans;
-    --df-messenger-chat-background: #E7EFFE;
-    --df-messenger-message-user-background: #d3e3fd;
-    --df-messenger-message-bot-background: #fff;
-    bottom: 16px;
-    right: 16px;
-  }
-</style>
+  <!-- Dialogflow -->
+  <script src="https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/df-messenger.js"></script>
+  <df-messenger
+    project-id="prepbot-41203"
+    agent-id="a7312d25-0fbd-4d6f-9af4-d76274c1c1c0"
+    language-code="en"
+    max-query-length="-1">
+    <df-messenger-chat-bubble chat-title="PrEP Bot"></df-messenger-chat-bubble>
+  </df-messenger>
+  <style>
+    df-messenger {
+      z-index: 999;
+      position: fixed;
+      --df-messenger-font-color: #000;
+      --df-messenger-font-family: DM Sans, Google Sans, system-ui;
+      --df-messenger-chat-background: #f3f6fc;
+      --df-messenger-message-user-background: #d3e3fd;
+      --df-messenger-message-bot-background: #fff;
+      bottom: 16px;
+      right: 16px;
+    }
+  </style>
 
-  <!-- App JS -->
   <script src="assets/js/main.js"></script>
+  <!-- FAQ icon toggle -->
+  <script>
+    document.querySelectorAll('.faq-item').forEach(function(item) {
+      item.addEventListener('toggle', function() {
+        var icon = item.querySelector('.faq-icon');
+        if (!icon) return;
+        icon.style.transform = item.open ? 'rotate(45deg)' : '';
+      });
+    });
+    // nav CTA nudge
+    var navCta = document.getElementById('open-chat-nav');
+    if (navCta) {
+      navCta.addEventListener('click', function(e) {
+        e.preventDefault();
+        var df = document.querySelector('df-messenger');
+        if (df) { df.classList.add('df-nudge'); setTimeout(function(){ df.classList.remove('df-nudge'); }, 1200); try { df.setAttribute('opened','true'); } catch(_){} }
+      });
+    }
+  </script>
+  <script>(function(t,e,s,o){var n,a,c;t.SMCX=t.SMCX||[],e.getElementById(o)||(n=e.getElementsByTagName(s),a=n[n.length-1],c=e.createElement(s),c.type="text/javascript",c.async=!0,c.id=o,c.src="https://widget.surveymonkey.com/collect/website/js/tRaiETqnLgj758hTBazgd9vvG7KR2qOWaJGdmZ7D1BNbGoPE7Y5vOvWyBUtQnC1r.js",a.parentNode.insertBefore(c,a))})(window,document,"script","smcx-sdk");</script>
 </body>
 </html>
