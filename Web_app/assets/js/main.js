@@ -84,11 +84,29 @@
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = String(y);
 
-  // Chat history capture + download
-  const chatLog = [];
-
-  function formatTimestamp() {
-    return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  // Chat history download — reads directly from the shadow DOM at click time
+  function readMessagesFromDOM() {
+    const lines = [];
+    try {
+      const df = document.querySelector('df-messenger');
+      // Walk through nested shadow roots to find message elements
+      const chat = df && df.shadowRoot && df.shadowRoot.querySelector('df-messenger-chat');
+      const chatSR = chat && chat.shadowRoot;
+      const msgList = chatSR && chatSR.querySelector('df-message-list');
+      const msgListSR = msgList && msgList.shadowRoot;
+      if (msgListSR) {
+        msgListSR.querySelectorAll('df-response, df-request').forEach(el => {
+          const isBot = el.tagName.toLowerCase() === 'df-response';
+          const sr = el.shadowRoot;
+          if (!sr) return;
+          sr.querySelectorAll('p, span, .message-text, [class*="message"]').forEach(p => {
+            const t = p.textContent && p.textContent.trim();
+            if (t) lines.push(`${isBot ? 'PrEP Bot' : 'You'}: ${t}`);
+          });
+        });
+      }
+    } catch(_) {}
+    return lines;
   }
 
   function showDownloadBtn() {
@@ -101,36 +119,43 @@
     btn.addEventListener('mouseenter', () => btn.style.background = '#f4f6fb');
     btn.addEventListener('mouseleave', () => btn.style.background = '#fff');
     btn.addEventListener('click', () => {
-      if (!chatLog.length) return;
-      const lines = ['PrEP Bot — Chat History', '=' .repeat(40), ''];
-      chatLog.forEach(m => lines.push(`[${m.time}] ${m.role === 'user' ? 'You' : 'PrEP Bot'}: ${m.text}`));
-      lines.push('', '=' .repeat(40), `Downloaded ${new Date().toLocaleString()}`);
-      const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
+      // Try shadow DOM first, fall back to event-captured log
+      let msgLines = readMessagesFromDOM();
+      if (!msgLines.length) msgLines = chatLog.map(m => `${m.role === 'user' ? 'You' : 'PrEP Bot'}: ${m.text}`);
+      if (!msgLines.length) { alert('No chat messages to download yet.'); return; }
+      const content = ['PrEP Bot — Chat History', '='.repeat(40), '', ...msgLines, '', '='.repeat(40), `Downloaded ${new Date().toLocaleString()}`].join('\n');
+      const blob = new Blob([content], { type: 'text/plain' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
       a.download = 'prepbot-chat.txt';
+      document.body.appendChild(a);
       a.click();
-      URL.revokeObjectURL(a.href);
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(a.href), 1000);
     });
     document.body.appendChild(btn);
   }
 
+  // Also capture via events as a reliable fallback
+  const chatLog = [];
   const dfEl = document.querySelector('df-messenger');
   if (dfEl) {
     try {
       dfEl.addEventListener('df-request-sent', (e) => {
-        const text = e && e.detail && e.detail.queryInput && e.detail.queryInput.text && e.detail.queryInput.text.text;
-        if (text) { chatLog.push({ role: 'user', text, time: formatTimestamp() }); showDownloadBtn(); }
+        try {
+          const d = e && e.detail;
+          const text = (d && d.queryInput && d.queryInput.text && (d.queryInput.text.text || d.queryInput.text)) ||
+                       (d && d.input && d.input.text);
+          if (text && typeof text === 'string') chatLog.push({ role: 'user', text });
+        } catch(_) {}
       });
       dfEl.addEventListener('df-response-received', (e) => {
         try {
-          const msgs = e && e.detail && e.detail.response && e.detail.response.queryResult && e.detail.response.queryResult.responseMessages;
-          if (msgs) {
-            msgs.forEach(m => {
-              const text = m.text && m.text.text && m.text.text[0];
-              if (text) chatLog.push({ role: 'bot', text, time: formatTimestamp() });
-            });
-          }
+          const msgs = e.detail && e.detail.response && e.detail.response.queryResult && e.detail.response.queryResult.responseMessages;
+          (msgs || []).forEach(m => {
+            const text = m.text && ((m.text.text && m.text.text[0]) || m.text);
+            if (text && typeof text === 'string') chatLog.push({ role: 'bot', text });
+          });
         } catch(_) {}
       });
       dfEl.addEventListener('df-error', (e) => {
