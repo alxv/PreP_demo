@@ -88,20 +88,42 @@
   function readMessagesFromDOM() {
     const lines = [];
     try {
+      // Recursively find a selector across nested shadow roots
+      function findDeep(root, selector) {
+        const sr = (root && root.shadowRoot) || root;
+        if (!sr || !sr.querySelector) return null;
+        const found = sr.querySelector(selector);
+        if (found) return found;
+        for (const child of Array.from(sr.children || [])) {
+          const res = findDeep(child, selector);
+          if (res) return res;
+        }
+        return null;
+      }
+
+      // df-messenger-chat-bubble holds the chat window in its shadow root
+      // (df-messenger only has a slot); try bubble first, then df-messenger
+      const bubble = document.querySelector('df-messenger-chat-bubble');
       const df = document.querySelector('df-messenger');
-      // Walk through nested shadow roots to find message elements
-      const chat = df && df.shadowRoot && df.shadowRoot.querySelector('df-messenger-chat');
-      const chatSR = chat && chat.shadowRoot;
-      const msgList = chatSR && chatSR.querySelector('df-message-list');
-      const msgListSR = msgList && msgList.shadowRoot;
+
+      let msgListSR = null;
+      for (const entry of [bubble, df].filter(Boolean)) {
+        const msgList = findDeep(entry, 'df-message-list');
+        if (msgList && msgList.shadowRoot) { msgListSR = msgList.shadowRoot; break; }
+      }
+
       if (msgListSR) {
-        msgListSR.querySelectorAll('df-response, df-request').forEach(el => {
-          const isBot = el.tagName.toLowerCase() === 'df-response';
-          const sr = el.shadowRoot;
-          if (!sr) return;
-          sr.querySelectorAll('p, span, .message-text, [class*="message"]').forEach(p => {
+        // Support both older (df-response/df-request) and newer (df-message) element names
+        msgListSR.querySelectorAll('df-response, df-request, df-message').forEach(el => {
+          const tag = el.tagName.toLowerCase();
+          const isBot = tag === 'df-response' ||
+                        el.getAttribute('msg-type') === 'response' ||
+                        !el.hasAttribute('user-msg');
+          const sr = el.shadowRoot || el;
+          const seen = new Set();
+          (sr.querySelectorAll ? sr.querySelectorAll('p, span, .message-text, [class*="text"]') : []).forEach(p => {
             const t = p.textContent && p.textContent.trim();
-            if (t) lines.push(`${isBot ? 'PrEP Bot' : 'You'}: ${t}`);
+            if (t && !seen.has(t)) { seen.add(t); lines.push(`${isBot ? 'PrEP Bot' : 'You'}: ${t}`); }
           });
         });
       }
@@ -144,16 +166,24 @@
       dfEl.addEventListener('df-request-sent', (e) => {
         try {
           const d = e && e.detail;
-          const text = (d && d.queryInput && d.queryInput.text && (d.queryInput.text.text || d.queryInput.text)) ||
-                       (d && d.input && d.input.text);
+          // Detail may be wrapped in requestBody or exposed directly
+          const qi = (d && d.queryInput) || (d && d.requestBody && d.requestBody.queryInput);
+          const text = (qi && qi.text && (typeof qi.text === 'object' ? qi.text.text : qi.text)) ||
+                       (d && d.input && d.input.text) ||
+                       (d && typeof d.text === 'string' && d.text);
           if (text && typeof text === 'string') chatLog.push({ role: 'user', text });
         } catch(_) {}
       });
       dfEl.addEventListener('df-response-received', (e) => {
         try {
-          const msgs = e.detail && e.detail.response && e.detail.response.queryResult && e.detail.response.queryResult.responseMessages;
+          const d = e && e.detail;
+          // e.detail.messages is an array of {type, text} where text is a plain string
+          // e.detail.raw.queryResult.responseMessages is the raw CX response (text.text[0])
+          const msgs = (d && d.messages) ||
+                       (d && d.raw && d.raw.queryResult && d.raw.queryResult.responseMessages);
           (msgs || []).forEach(m => {
-            const text = m.text && ((m.text.text && m.text.text[0]) || m.text);
+            const text = (typeof m.text === 'string' && m.text) ||
+                         (m.text && m.text.text && m.text.text[0]);
             if (text && typeof text === 'string') chatLog.push({ role: 'bot', text });
           });
         } catch(_) {}
