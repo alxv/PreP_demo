@@ -328,33 +328,28 @@
 
   <!-- Dialogflow -->
   <script src="https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/df-messenger.js"></script>
-  <df-messenger
-    project-id="prepbot-41203"
-    agent-id="a7312d25-0fbd-4d6f-9af4-d76274c1c1c0"
-    language-code="en"
-    max-query-length="-1">
-    <df-messenger-chat-bubble chat-title="PrEP Bot"></df-messenger-chat-bubble>
-  </df-messenger>
-  <style>
-    .smcx-passive-feedback > .smcx-btn-primary {
-      right: auto !important;
-      left: 0px !important;
-      transform: rotate(90deg) translate(-100%, 0%) !important;
-      transform-origin: left bottom !important;
-    }
-    df-messenger {
-      z-index: 999;
-      position: fixed;
-      --df-messenger-font-color: #000;
-      --df-messenger-font-family: DM Sans, Google Sans, system-ui;
-      --df-messenger-chat-background: #f3f6fc;
-      --df-messenger-message-user-background: #d3e3fd;
-      --df-messenger-message-bot-background: #fff;
-      --df-messenger-chat-window-width: 420px;
-      bottom: 16px;
-      right: 16px;
-    }
-  </style>
+<df-messenger
+  project-id="project-fa80531e-0afc-4552-84c"
+  agent-id="995017c9-4abc-4311-8eee-46acaa80cc8a"
+  language-code="en"
+  max-query-length="-1">
+  <df-messenger-chat-bubble
+    chat-title="PrEPBot">
+  </df-messenger-chat-bubble>
+</df-messenger>
+<style>
+  df-messenger {
+    z-index: 999;
+    position: fixed;
+    --df-messenger-font-color: #000;
+    --df-messenger-font-family: Google Sans;
+    --df-messenger-chat-background: #F6ECF8;
+    --df-messenger-message-user-background: #d3e3fd;
+    --df-messenger-message-bot-background: #fff;
+    bottom: 16px;
+    right: 16px;
+  }
+</style>
 
   <script src="assets/js/main.js"></script>
   <!-- FAQ icon toggle -->
